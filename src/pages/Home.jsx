@@ -3,13 +3,17 @@ import { useState } from 'react'
 function Home ({w}) {
 
 const apiKey = import.meta.env.VITE_API_KEY;
-const [mmr, setMMR] = useState(null);
+const [mmr, setMMR] = useState("");
 const [userName, setUserName] = useState("");
 const [tag, setTag] = useState("");
 const [region, setRegion] = useState("");
 const regionsList = ["na", "eu", "latam", "br", "ap", "kr"]
 const [array, setArray] = useState([])
 const [integer, setInteger] = useState(0)
+const ningbong = "ningbong";
+const danah = "Helpdanahツ";
+const jono = "taeisbad";
+
 
 const Click = async (e) => {
     e.preventDefault()
@@ -17,8 +21,21 @@ const Click = async (e) => {
     //no region selected error message
     if (region === "" || region === "SELECT"){
         alert("Please select a region");
-
+        return;
     }
+
+    if (userName === "" || tag === ""){
+        alert("Please fill in all your information")
+        return;
+    }
+    
+    if (userName.toLowerCase() === ningbong || userName.toLowerCase() === danah || userName.toLowerCase() === jono){
+        alert("NO STATS FOR YOU ASSHOLE I CLOSE THE WINDOW NOW")
+        window.open("about:blank", "_self");
+        window.close();
+        return;
+    }
+
 
         const apiCheck = async () => {
         try {
@@ -33,7 +50,10 @@ const Click = async (e) => {
     //    setArray(prevResults => [...prevResults, data]);
     setMMR(data)
     setInteger(1)
-
+    if (mmr.status === 404){
+        alert("Invalid Information")
+        return;
+    }
       
       // Clear input after submission
     //   setUserName('');
@@ -103,7 +123,7 @@ const Click = async (e) => {
                     <input className = "textBar" type = "text" placeholder = "Enter Username" onChange = {(e) => setUserName(e.target.value)}/>
                     <input className = "textBar" type = "text" placeholder = "Enter Tagline (Exclude #)" onChange = {(e) => setTag(e.target.value)}/>
                     <select onChange = {(e) => setRegion(e.target.value)}>
-                        <option value = "na">Select Region:</option>
+                        <option value = "SELECT">Select Region:</option>
                         {regionsList.map(regions => <option key = {regions}>{regions}</option>)}
                     </select>
                     <button className = "submitButton" onClick = {Click}>Submit</button>
