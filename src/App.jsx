@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <Home w="I love VALORANT!"/>
+      <Home w="Check Your Stats!"/>
     </>
   )
 }
