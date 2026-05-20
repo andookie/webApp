@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <Home w="Check Your Stats!"/>
+      <Home w="Check Your MMR!"/>
     </>
   )
 }

@@ -2,17 +2,53 @@ import { useState } from 'react'
 
 function Home ({w}) {
 
-// const [currentRank, changeCurrentRank] = useState("");
-// const [userName, setUserName] = useState("");
-// const [tag, setTag] = useState("");
-// const [region, setRegion] = useState("");
-// const [platform, setPlatform] = useState("");
+const apiKey = import.meta.env.VITE_API_KEY;
+const [mmr, setMMR] = useState(null);
+const [userName, setUserName] = useState("");
+const [tag, setTag] = useState("");
+const [region, setRegion] = useState("");
+const regionsList = ["na", "eu", "latam", "br", "ap", "kr"]
+const [array, setArray] = useState([])
+const [integer, setInteger] = useState(0)
+
+const Click = async (e) => {
+    e.preventDefault()
+
+    //no region selected error message
+    if (region === "" || region === "SELECT"){
+        alert("Please select a region");
+
+    }
+
+        const apiCheck = async () => {
+        try {
+         const response = await fetch(`https://api.henrikdev.xyz/valorant/v2/mmr/${region}/${userName}/${tag}`, {
+             method: 'GET',
+             headers: {
+       "Authorization": `${apiKey}`,
+       "Accept": "*/*"
+     },
+ });
+    const data = await response.json();
+    //    setArray(prevResults => [...prevResults, data]);
+    setMMR(data)
+    setInteger(1)
+
+      
+      // Clear input after submission
+    //   setUserName('');
+    //   setRegion('');
+    //   setTag('');
+        }
+    catch (error) {
+        console.error("Fetch error:", error);
+        alert(error)
+            }
+        };
+    apiCheck();
 
 
-const Search = (e) => {
-    changeCurrentRank(e.target.value)
-} 
-
+}
 
 // const Ranks = 
 //     ["Iron 1", "Iron 2", "Iron 3", 
@@ -27,7 +63,7 @@ const Search = (e) => {
 // useEffect ( () => {
 //     const apiCheck = async () => {
 //         try {
-// //         const response = await fetch(`https://api.henrikdev.xyz/valorant/v2/mmr/${region}/${userName}/${tag}`, {
+// //         const response = await fetch(`https://api.henrikdev.xyz/valorant/v3/mmr/${region}/${userName}/${tag}`, {
 // //             method: 'GET',
 // //             headers: {
 // //       "Authorization": `${apiKey}`,
@@ -64,11 +100,26 @@ const Search = (e) => {
             </div> */}
 
                 <form className = "form">
-                    <input type = "text" placeholder = "Enter Username">
-                    </input>
-
+                    <input className = "textBar" type = "text" placeholder = "Enter Username" onChange = {(e) => setUserName(e.target.value)}/>
+                    <input className = "textBar" type = "text" placeholder = "Enter Tagline (Exclude #)" onChange = {(e) => setTag(e.target.value)}/>
+                    <select onChange = {(e) => setRegion(e.target.value)}>
+                        <option value = "na">Select Region:</option>
+                        {regionsList.map(regions => <option key = {regions}>{regions}</option>)}
+                    </select>
+                    <button className = "submitButton" onClick = {Click}>Submit</button>
+                
                 </form>
         </div>
+            {integer === 1 ? 
+            <div style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px', width: '50%'  }}>
+                <h2>Username: {mmr.data.name}#{mmr.data.tag}</h2>
+                <p>Current Rank: {mmr.data.current_data.currenttierpatched}</p>
+                <img src = {mmr.data.current_data.images.small}/>
+                <p>Current RR: {mmr.data.current_data.ranking_in_tier}</p>
+                <p>Most Recent MMR Change: {mmr.data.current_data.mmr_change_to_last_game}</p>
+                <p>Peak Rank: {mmr.data.highest_rank.patched_tier} in {mmr.data.highest_rank.season}</p>
+            </div>
+            : <div></div>}
     </>
     )
 
