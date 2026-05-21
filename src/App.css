@@ -7,6 +7,8 @@
   border: 2px solid transparent;
   transition: border-color 0.3s;
   margin-bottom: 24px;
+  display: flex;
+  gap: 30px;
 
   &:hover {
     border-color: var(--accent-border);
@@ -16,7 +18,15 @@
     outline-offset: 2px;
   }
 }
-
+.rankBox {
+  display: flex;
+  gap: 50px;
+  border: 2px;
+  border-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  place-content: center;
+}
 .hero {
   position: relative;
 

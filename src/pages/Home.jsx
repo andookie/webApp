@@ -1,19 +1,26 @@
 import { useState } from 'react'
 
-function Home ({w}) {
+function Home () {
 
 const apiKey = import.meta.env.VITE_API_KEY;
-const [mmr, setMMR] = useState("");
+const ironIMG = "https://media.valorant-api.com/competitivetiers/03621f52-342b-cf4e-4f86-9350a49c6d04/3/smallicon.png"
+const [mmr, setMMR] = useState(null);
 const [userName, setUserName] = useState("");
 const [tag, setTag] = useState("");
 const [region, setRegion] = useState("");
 const regionsList = ["na", "eu", "latam", "br", "ap", "kr"]
-const [array, setArray] = useState([])
+const [mean, setMean] = useState(false)
 const [integer, setInteger] = useState(0)
 const ningbong = "ningbong";
 const danah = "Helpdanahツ";
 const jono = "taeisbad";
 
+
+const nextClick = (e) => {
+        alert("NO STATS FOR YOU ASSHOLE I CLOSE THE WINDOW NOW")
+        window.open("about:blank", "_self");
+        window.close();
+}
 
 const Click = async (e) => {
     e.preventDefault()
@@ -30,9 +37,7 @@ const Click = async (e) => {
     }
     
     if (userName.toLowerCase() === ningbong || userName.toLowerCase() === danah || userName.toLowerCase() === jono){
-        alert("NO STATS FOR YOU ASSHOLE I CLOSE THE WINDOW NOW")
-        window.open("about:blank", "_self");
-        window.close();
+        setMean(true)
         return;
     }
 
@@ -102,12 +107,28 @@ const Click = async (e) => {
 
 // }, [currentRank])
 
+if (mean){
+    return(
+        <div>
+            <h1 style = {{color: "red", fontSize: '100px'}}>ASSHOLE DETECTED</h1>
+            <div className = 'rankBox'>
+                <h2>Username: {userName}#{tag}</h2>
+                <p>Current Rank: Iron 1</p>
+                <img src = {ironIMG}/>
+                <p>Current RR: 0 (LOL U SUCK)</p>
+                <p>Most Recent MMR Change: -99999999</p>
+                <p>Peak Rank: Below Iron V26 Act 3</p>
+            </div>
+            <div>
+                <p>Press this button!</p>
+                <button className = 'counter' onClick = {nextClick}>Button</button>
+            </div>
+        </div>
+    )
+}
+
     return(
     <>
-    <div>
-        <h1>Andookie's VALORANT App!</h1>
-    </div>
-        <h2>{w}</h2>
         <div>
             {/* <form type = "text" className = "searchBar">
                 <select className = "dropdown" onChange = {Search}>
@@ -131,7 +152,7 @@ const Click = async (e) => {
                 </form>
         </div>
             {integer === 1 ? 
-            <div style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px', width: '50%'  }}>
+            <div className = 'rankBox'>
                 <h2>Username: {mmr.data.name}#{mmr.data.tag}</h2>
                 <p>Current Rank: {mmr.data.current_data.currenttierpatched}</p>
                 <img src = {mmr.data.current_data.images.small}/>
@@ -142,6 +163,7 @@ const Click = async (e) => {
             : <div></div>}
     </>
     )
+
 
 }
 
